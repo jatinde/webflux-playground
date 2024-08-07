@@ -1,0 +1,46 @@
+<!-- http://dev.cs.ovgu.de/java/logback/manual/layouts.html -->
+<configuration>
+    <property name="LOGDIR" value="logs" />
+    <timestamp key="myTimestamp" datePattern="yyyy-MM-dd'_'HH-mm-ss.SSS"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[Webflux STDOUT] %d{HH:mm:ss.SSS} %-5level [%15.15t] %cyan(%-30.30logger{30}) : %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE"  class="ch.qos.logback.core.FileAppender">
+        <File>${LOGDIR}/webflux-${myTimestamp}.log</File>
+        <encoder>
+            <pattern>[Webflux FILE] %d{HH:mm:ss.SSS} %-5level [%15.15t] %cyan(%-30.30logger{30}) : %m%n</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>reactive.%i{yyyy-MM-dd_HH:mm:ss.SSS}}.log</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>10</MaxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>2MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    <logger name="io.netty.resolver.dns.DnsServerAddressStreamProviders" level="OFF"/>
+    <!--<root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>-->
+    <logger name="com.github.jatinde.webflux_payground" level="debug" >
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="com.github.jatinde.webflux_payground" level="info" >
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="com.github.jatinde.webflux_payground" level="error" >
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+</configuration>
