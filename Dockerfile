@@ -18,12 +18,12 @@ ENV JAVA_HOME=/opt/java/openjdk
 ENV PATH "${JAVA_HOME}/bin:${PATH}"
 COPY --from=build /javaruntime $JAVA_HOME
 WORKDIR /app
-COPY --from=build /app/target/reactor-1.0-SNAPSHOT.jar /app/reactor.jar
-COPY --from=build /app/logback /app/logback
+COPY --from=build /app/target/webflux-payground-0.0.1-SNAPSHOT.jar /app/webflux-payground.jar
+#COPY --from=build /app/logback /app/logback
 RUN mkdir logs
 #EXPOSE 8080
 #ENTRYPOINT exec java $JAVA_OPTS -jar elasticapp.jar
 #WORKDIR /app/build/libs
 # For Spring-Boot project, use the entrypoint below to reduce Tomcat startup time.
-ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar reactor.jar
+ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar webflux-payground.jar
 #CMD ["./reactor"]
