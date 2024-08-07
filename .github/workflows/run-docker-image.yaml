@@ -7,7 +7,7 @@ jobs:
     container: alpine:3
     services:
       app:
-        image: jatindocker4/ssl:1.0
+        image: jatindocker4/webflux-playfround
         #ports:
         #  -  8080:8080
         env:

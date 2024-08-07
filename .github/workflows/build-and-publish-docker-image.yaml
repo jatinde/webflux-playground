@@ -25,7 +25,7 @@ jobs:
         id: tags-step
         uses: docker/metadata-action@v5
         with:
-          images: jatindocker4/elasticapp
+          images: jatindocker4/webflux-playfround
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
