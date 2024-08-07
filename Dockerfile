@@ -19,7 +19,6 @@ ENV PATH "${JAVA_HOME}/bin:${PATH}"
 COPY --from=build /javaruntime $JAVA_HOME
 WORKDIR /app
 COPY --from=build /app/target/webflux-payground-0.0.1-SNAPSHOT.jar /app/webflux-payground.jar
-#COPY --from=build /app/logback /app/logback
 RUN mkdir logs
 #EXPOSE 8080
 #ENTRYPOINT exec java $JAVA_OPTS -jar elasticapp.jar
