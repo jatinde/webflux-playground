@@ -1,0 +1,25 @@
+name: Run docker image
+on: [ workflow_dispatch]
+
+jobs:
+  run-docker-image:
+    runs-on: ubuntu-latest
+    container: alpine:3
+    services:
+      app:
+        image: jatindocker4/ssl:1.0
+        #ports:
+        #  -  8080:8080
+        env:
+          MONGO_HOST: mongo
+      mongo:
+        image: mongo
+        #ports:
+         # - 27017:27017
+    steps:
+      - name: Installing curl
+        run: apk add curl
+      - name: Dump Job Context information
+        run: echo "${{toJson(job.services)}}"
+      - name: Get Response Greeting
+        run: curl http://app:8080/greet
