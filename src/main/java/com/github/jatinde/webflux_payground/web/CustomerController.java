@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.github.jatinde.webflux_payground.dto.CustomerDto;
+import com.github.jatinde.webflux_payground.exceptions.ApplicationExceptions;
 import com.github.jatinde.webflux_payground.service.CustomerService;
+import com.github.jatinde.webflux_payground.validator.RequestValidator;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -55,23 +57,27 @@ public class CustomerController {
     @GetMapping("{id}")
     public Mono<ResponseEntity<CustomerDto>> getCustomerById(@PathVariable Integer id) {
         var customer = customerService.getCustomerById(id);
+        
         return customer.map(ResponseEntity::ok)
-                    .defaultIfEmpty(ResponseEntity.notFound().build());
+                    .switchIfEmpty(ApplicationExceptions.customerNotFoundException(id));
     }
 
     @PostMapping
     public Mono<ResponseEntity<CustomerDto>> saveCustomer(@RequestBody Mono<CustomerDto> customer) {
-        var savedCustomer = customerService.save(customer);
+        var validatedCustomer = customer.transform(RequestValidator.validate());
+        var savedCustomer = validatedCustomer.as(customerService::save);
         return savedCustomer.map(
             c -> ResponseEntity.created(UriComponentsBuilder.newInstance()
-            .scheme("http").host(host).port(Integer.valueOf(port))
+            .scheme("http").host(host).port(port)
             .path("/customers/{id}").build(c.id().toString())).build());
     }
 
     @PutMapping("{id}")
     public Mono<ResponseEntity<CustomerDto>> updaeCustomer(@PathVariable Integer id, @RequestBody Mono<CustomerDto> customer) {
-        var updateCustomer = customerService.update(id, customer);
-        return updateCustomer.map(ResponseEntity::ok).defaultIfEmpty(ResponseEntity.notFound().build());
+        var validatedCustomer = customer.transform(RequestValidator.validate());
+        var updateCustomer = validatedCustomer.as(dto -> customerService.update(id, dto));
+        return updateCustomer.map(ResponseEntity::ok)
+                    .switchIfEmpty(ApplicationExceptions.customerNotFoundException(id));
     }
 
     @DeleteMapping("{id}")
@@ -79,7 +85,7 @@ public class CustomerController {
         return customerService.delete(id)
                     .filter(b -> b)
                     .map(b -> ResponseEntity.ok().<Void>build())
-                    .defaultIfEmpty(ResponseEntity.notFound().build());
+                    .switchIfEmpty(ApplicationExceptions.customerNotFoundException(id));
     }
     
 }

@@ -1,6 +1,7 @@
 ### GET
 
 GET http://localhost:8080/customers
+auth-token: secret456
 
 ### GET Paged
 
@@ -8,11 +9,12 @@ GET http://localhost:8080/customers/paginated?page=2&size=3
 
 ### GET BY ID
 
-GET http://localhost:8080/customers/2
+GET http://localhost:8080/customers/3
 
 ### POST Create Customer
 
 POST http://localhost:8080/customers
+auth-token: secret123
 Content-Type: application/json
 
 {
@@ -26,8 +28,8 @@ PUT  http://localhost:8080/customers/3
 Content-Type: application/json
 
 {
-  "name": "jatin",
-  "email": "jatin@kubehib.in"
+
+  "email": "jatin@kubehub.in"
 }
 
 ### DELETE BY ID

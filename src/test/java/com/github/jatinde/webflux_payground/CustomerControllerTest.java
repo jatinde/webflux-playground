@@ -25,6 +25,7 @@ public class CustomerControllerTest {
     public void testAllCustomers() {
         webTestClient.get()
             .uri("/customers")
+            .header("auth-token", "secret456")
             .exchange()
             .expectStatus().is2xxSuccessful()
             .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -37,6 +38,7 @@ public class CustomerControllerTest {
     public void testPaginatedCustomers() {
         webTestClient.get()
             .uri("/customers/paginated?page=2&size=3")
+            .header("auth-token", "secret456")
             .exchange()
             .expectStatus().is2xxSuccessful()
             .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -55,6 +57,7 @@ public class CustomerControllerTest {
     public void testCustomerById() {
         webTestClient.get()
             .uri("/customers/2")
+            .header("auth-token", "secret456")
             .exchange()
             .expectStatus().is2xxSuccessful()
             .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -71,6 +74,7 @@ public class CustomerControllerTest {
         var dto =new CustomerDto("jat", "jat@kubehub.in");
         webTestClient.post()
             .uri("/customers")
+            .header("auth-token", "secret456")
             .bodyValue(dto)
             .exchange()
             .expectStatus().is2xxSuccessful()
@@ -80,6 +84,7 @@ public class CustomerControllerTest {
 
         webTestClient.delete()
         .uri("/customers/11")
+        .header("auth-token", "secret456")
         .exchange()
         .expectStatus().is2xxSuccessful()
         .expectBody().isEmpty();
@@ -91,6 +96,7 @@ public class CustomerControllerTest {
         var dto =new CustomerDto("jat", "jat@kubehub.in");
         webTestClient.put()
             .uri("/customers/3")
+            .header("auth-token", "secret456")
             .bodyValue(dto)
             .exchange()
             .expectStatus().is2xxSuccessful()
@@ -108,22 +114,65 @@ public class CustomerControllerTest {
     public void customerNotFound() {
         webTestClient.get()
         .uri("/customers/11")
+        .header("auth-token", "secret456")
         .exchange()
         .expectStatus().is4xxClientError()
-        .expectBody().isEmpty();
+        .expectBody()
+        .jsonPath("$.type").isEqualTo( "http://example.com/problems/not-found")
+        .jsonPath("$.title").isEqualTo("Customer Not Found.")
+        .jsonPath("$.status").isEqualTo(404);
+
 
         webTestClient.delete()
         .uri("/customers/11")
+        .header("auth-token", "secret456")
         .exchange()
         .expectStatus().is4xxClientError()
-        .expectBody().isEmpty();
+        .expectBody()
+        .jsonPath("$.type").isEqualTo( "http://example.com/problems/not-found")
+        .jsonPath("$.title").isEqualTo("Customer Not Found.")
+        .jsonPath("$.status").isEqualTo(404);
 
         var dto =new CustomerDto("jat", "jat@kubehub.in");
         webTestClient.put()
             .uri("/customers/11")
+            .header("auth-token", "secret456")
             .bodyValue(dto)
             .exchange()
             .expectStatus().is4xxClientError()
-            .expectBody().isEmpty();
+            .expectBody()
+            .jsonPath("$.type").isEqualTo( "http://example.com/problems/not-found")
+            .jsonPath("$.title").isEqualTo("Customer Not Found.")
+            .jsonPath("$.status").isEqualTo(404);
+    }
+
+    @Test
+    public void invalidInput() {
+        var postDto =new CustomerDto(null, "jat@kubehub.in");
+        webTestClient.post()
+        .uri("/customers")
+        .header("auth-token", "secret456")
+        .bodyValue(postDto)
+        .exchange()
+        .expectStatus().is4xxClientError()
+        .expectBody()
+        .jsonPath("$.type").isEqualTo( "http://example.com/problems/invalid-input")
+        .jsonPath("$.title").isEqualTo("Invalid Input.")
+        .jsonPath("$.detail").isEqualTo("Name field is required.")
+        .jsonPath("$.status").isEqualTo(400);
+
+
+        var putDto =new CustomerDto("jat", "jat@kubehubin");
+        webTestClient.put()
+            .uri("/customers/3")
+            .header("auth-token", "secret456")
+            .bodyValue(putDto)
+            .exchange()
+            .expectStatus().is4xxClientError()
+            .expectBody()
+            .jsonPath("$.type").isEqualTo( "http://example.com/problems/invalid-input")
+            .jsonPath("$.title").isEqualTo("Invalid Input.")
+            .jsonPath("$.detail").isEqualTo("Valid Email field is required.")
+            .jsonPath("$.status").isEqualTo(400);
     }
 }
