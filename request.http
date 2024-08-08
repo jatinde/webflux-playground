@@ -1,0 +1,35 @@
+### GET
+
+GET http://localhost:8080/customers
+
+### GET Paged
+
+GET http://localhost:8080/customers/paginated?page=2&size=3
+
+### GET BY ID
+
+GET http://localhost:8080/customers/2
+
+### POST Create Customer
+
+POST http://localhost:8080/customers
+Content-Type: application/json
+
+{
+  "name": "jat",
+  "email": "jat@kubehib.in"
+}
+
+### PUT Update Customer BY ID
+
+PUT  http://localhost:8080/customers/3
+Content-Type: application/json
+
+{
+  "name": "jatin",
+  "email": "jatin@kubehib.in"
+}
+
+### DELETE BY ID
+
+DELETE  http://localhost:8080/customers/1

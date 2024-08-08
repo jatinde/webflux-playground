@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   webfluxpayground:
-    #image: webfluxpayground
-    #build:
-    #  context: .
-    #  dockerfile: ./Dockerfile
-    image: jatindocker4/webflux-playfround
+    image: webfluxpayground
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    #image: jatindocker4/webflux-playfround
     ports:
       - 8080:8080
