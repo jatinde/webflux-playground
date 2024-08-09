@@ -1,11 +1,9 @@
 package com.github.jatinde.webflux_payground.config.h2;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 
-@Configuration
-@Profile("local") //change or remove according to your convenience
+//@Configuration
+//@Profile("local") //change or remove according to your convenience
 public class H2ConsoleConfiguration {
 
   private org.h2.tools.Server webServer;

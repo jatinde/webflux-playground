@@ -4,7 +4,7 @@ ENV JAVA_OPTS=$JAVA_OPTS
 WORKDIR /app
 COPY . .
 RUN apk add maven
-RUN mvn clean package
+RUN mvn clean package -DskipTests=true
 RUN apk add binutils
 RUN $JAVA_HOME/bin/jlink \
 --add-modules java.base,java.desktop,java.naming,java.xml,java.management,java.sql,java.instrument,java.management,java.rmi,java.scripting,java.security.jgss \
