@@ -27,6 +27,9 @@ public class AuthenticationWebFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst("auth-token");
+        if(exchange.getRequest().getPath().toString().endsWith("h2-console")) {
+            return chain.filter(exchange);
+        }
 
         if(Objects.nonNull(token) && TOKEN_CATEGORY_MAP.containsKey(token)) {
             exchange.getAttributes().put("category", TOKEN_CATEGORY_MAP.get(token));

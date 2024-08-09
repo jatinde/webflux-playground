@@ -35,3 +35,24 @@ Content-Type: application/json
 ### DELETE BY ID
 
 DELETE  http://localhost:8080/customers/1
+
+### GET
+
+GET http://localhost:8080/fn/customers
+auth-token: secret456
+
+### PUT Update Customer BY ID
+
+PUT  http://localhost:8080/fn/customers/33
+Content-Type: application/json
+auth-token: secret456
+
+{
+
+  "email": "jatin@kubehub.in"
+}
+
+### GET Paged
+
+GET http://localhost:8080/fn/customers/paginated?page=2&size=3
+auth-token: secret456

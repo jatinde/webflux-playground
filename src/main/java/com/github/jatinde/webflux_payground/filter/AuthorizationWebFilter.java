@@ -26,6 +26,11 @@ public class AuthorizationWebFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+
+        if(exchange.getRequest().getPath().toString().endsWith("h2-console")) {
+            return chain.filter(exchange);
+        }
+
         var category = (Category)exchange.getAttributeOrDefault("category", Category.STANDARD);
         var isGet = HttpMethod.GET.name().equals(exchange.getRequest().getMethod().name());
         log.info("isGet: {}", isGet);
@@ -38,15 +43,6 @@ public class AuthorizationWebFilter implements WebFilter {
         };
 
 
-    }
-
-    private Mono<Void> standard(ServerWebExchange exchange, WebFilterChain chain) {
-        var isGet = HttpMethod.GET.name().equals(exchange.getRequest().getMethod().name());
-        log.info("isGet: {}", isGet);
-        if(isGet) {
-            return chain.filter(exchange);
-        }
-        return errorHandler.sendProblemDetail(exchange, HttpStatus.FORBIDDEN, "Forbidden: Invalid token.");
     }
     
 }
