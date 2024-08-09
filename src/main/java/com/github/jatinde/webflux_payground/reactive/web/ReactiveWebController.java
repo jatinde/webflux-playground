@@ -30,7 +30,7 @@ public class ReactiveWebController {
     @GetMapping("/products")
     public Flux<Product> getAllProducts() {
         return webClient.get()
-                .uri("/demo01/products/notorious")
+                .uri("/demo01/products")
                 .retrieve()
                 .bodyToFlux(Product.class)
                 .onErrorComplete()
@@ -40,7 +40,7 @@ public class ReactiveWebController {
     @GetMapping(value= "/products/stream", produces= MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Product> getAllProductsStream() {
         return webClient.get()
-                .uri("/demo01/products/notorious")
+                .uri("/demo01/products")
                 .retrieve()
                 .bodyToFlux(Product.class)
                 .doOnNext(p -> {logger.info("Product received from server: {}", p);});
