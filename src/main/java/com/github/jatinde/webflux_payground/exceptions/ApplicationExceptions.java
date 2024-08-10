@@ -8,8 +8,18 @@ public class ApplicationExceptions {
         return Mono.error(new CustomerNotFoundException(id));
     }
 
+    public static <T> Mono<T> productNotFoundException(Integer id) {
+        return Mono.error(new ProductNotFoundException(id));
+    }
+
     public static <T> Mono<T> missingNameException() {
         return Mono.error(new InvalidInputException("Name field is required."));
+    }
+    public static <T> Mono<T> missingDescriptionException() {
+        return Mono.error(new InvalidInputException("Description field is required."));
+    }
+    public static <T> Mono<T> missingPriceException() {
+        return Mono.error(new InvalidInputException("Price field is required."));
     }
 
     public static <T> Mono<T> invalidEmailException() {

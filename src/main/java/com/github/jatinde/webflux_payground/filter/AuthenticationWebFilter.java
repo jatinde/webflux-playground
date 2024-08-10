@@ -4,17 +4,15 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
 import reactor.core.publisher.Mono;
 
-@Order(1)
-@Service
+//@Order(1)
+//@Service
 public class AuthenticationWebFilter implements WebFilter {
     @Autowired
     private FilterErrorHandler errorHandler;
@@ -27,7 +25,7 @@ public class AuthenticationWebFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst("auth-token");
-        if(exchange.getRequest().getPath().toString().endsWith("h2-console")) {
+        if(exchange.getRequest().getPath().toString().endsWith("stream")) {
             return chain.filter(exchange);
         }
 

@@ -30,3 +30,5 @@ target
 Dockerfile*
 compose*
 docker-compose*
+
+products.txt

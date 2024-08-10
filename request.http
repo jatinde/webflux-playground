@@ -56,3 +56,40 @@ auth-token: secret456
 
 GET http://localhost:8080/fn/customers/paginated?page=2&size=3
 auth-token: secret456
+
+### GET
+
+GET http://localhost:8080/fn/products/30
+auth-token: secret456
+
+### GET
+
+GET http://localhost:8080/fn/products/header/30
+auth-token: secret456
+
+### GET
+
+GET http://localhost:8080/fn/products/basic/3
+auth-token: secret456
+
+### GET
+
+GET http://localhost:8080/fn/products/bearer/3
+auth-token: secret456
+
+
+### GET
+
+GET http://localhost:8080/fn/products
+auth-token: secret456
+Accept: text/event-stream
+
+### POST
+
+POST http://localhost:8080/fn/products
+auth-token: secret456
+Content-Type: application/json
+
+{
+    "description": "GP"
+}
